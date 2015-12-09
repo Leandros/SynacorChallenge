@@ -12,7 +12,7 @@
 #endif
 
 #ifndef FORCE_INLINE
-    #ifdef MVSC
+    #ifdef MSVC
         #define FORCE_INLINE __forceinline
     #else
         #define FORCE_INLINE __inline__ __attribute__((always_inline))
@@ -237,16 +237,19 @@ int parse(char const* filename)
     if (fseek(file, 0, SEEK_END))
     {
         fprintf(stderr, "Error: Opening File: %s\n", filename);
+        fclose(file);
         return 1;
     }
     if ((filesize = ftell(file)) == EOF)
     {
         fprintf(stderr, "Error: Opening File: %s\n", filename);
+        fclose(file);
         return 1;
     }
     if (fseek(file, 0, SEEK_SET))
     {
         fprintf(stderr, "Error: Opening File: %s\n", filename);
+        fclose(file);
         return 1;
     }
 
@@ -254,6 +257,7 @@ int parse(char const* filename)
     if (size_read != filesize)
     {
         fprintf(stderr, "Error: Reading File: %s\n", filename);
+        fclose(file);
         return 1;
     }
 
